@@ -176,7 +176,7 @@ export default function DashboardPage() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {quizzes.map((quiz) => (
-                    <QuizCard key={quiz._id} quiz={quiz} />
+                    <QuizCard key={quiz.id || quiz._id} quiz={quiz} />
                   ))}
                 </div>
               )}
@@ -190,8 +190,8 @@ export default function DashboardPage() {
               
               <Card className="p-5 bg-dark-800/40 border border-purple-500/10 backdrop-blur-md space-y-4">
                 {user.achievements && user.achievements.length > 0 ? (
-                  user.achievements.slice(0, 3).map((ach) => (
-                    <div key={ach._id} className="flex gap-3 items-center">
+                  user.achievements.slice(0, 3).map((ach: any) => (
+                    <div key={ach.id || ach._id} className="flex gap-3 items-center">
                       <div className="w-10 h-10 rounded-full bg-purple-500/10 border border-purple-500/25 flex items-center justify-center text-lg">
                         {ach.icon || '🏅'}
                       </div>

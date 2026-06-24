@@ -91,7 +91,7 @@ export function QuizCard({ quiz }: QuizCardProps) {
                 </span>
               </div>
 
-              <Link href={`/game/create?quizId=${quiz._id}`}>
+              <Link href={`/game/create?quizId=${quiz.id || quiz._id}`}>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
