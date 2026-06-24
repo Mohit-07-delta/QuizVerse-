@@ -39,7 +39,7 @@ export default function RegisterPage() {
 
     setLoading(true);
     try {
-      await register(email, password, name, avatar);
+      await register(name, email, password, avatar);
       toast.success('Account created successfully!');
       router.push('/dashboard');
     } catch (err: any) {
