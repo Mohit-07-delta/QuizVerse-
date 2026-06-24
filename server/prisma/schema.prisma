@@ -1,0 +1,225 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URL")
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+  MIXED
+}
+
+enum QuestionDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum QuestionType {
+  MCQ
+  TRUE_FALSE
+  IMAGE
+}
+
+enum GameMode {
+  CLASSIC
+  TEAM_BATTLE
+  DUEL
+  ELIMINATION
+  BATTLE_ROYALE
+  SPEED_CHALLENGE
+  PRACTICE
+}
+
+enum GameStatus {
+  WAITING
+  IN_PROGRESS
+  FINISHED
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum LeaderboardPeriod {
+  WEEKLY
+  MONTHLY
+  ALL_TIME
+}
+
+// ─── Embedded Types ───────────────────────────────────────────────────────────
+
+type Question {
+  text       String
+  type       QuestionType
+  options    String[]
+  correctAnswer Int
+  imageUrl   String?
+  timer      Int            @default(30)
+  difficulty QuestionDifficulty
+  hints      String[]
+  explanation String?
+}
+
+type PlayerAnswer {
+  questionIndex Int
+  answer        Int
+  isCorrect     Boolean
+  timeTaken     Float
+  pointsEarned  Int
+}
+
+type GamePlayer {
+  userId      String?
+  nickname    String
+  avatar      String
+  score       Int            @default(0)
+  streak      Int            @default(0)
+  bestStreak  Int            @default(0)
+  combo       Float          @default(1)
+  xpEarned    Int            @default(0)
+  answers     PlayerAnswer[]
+  isConnected Boolean        @default(true)
+}
+
+// ─── Models ───────────────────────────────────────────────────────────────────
+
+model User {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  email         String   @unique
+  name          String
+  passwordHash  String?
+  googleId      String?  @unique
+  avatar        String   @default("avatar1")
+  role          Role     @default(USER)
+  xp            Int      @default(0)
+  level         Int      @default(1)
+  streakDays    Int      @default(0)
+  lastLoginDate DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  quizzes              Quiz[]
+  hostedGames          Game[]
+  achievements         UserAchievement[]
+  analytics            Analytics[]
+  sentFriendRequests   Friendship[]       @relation("SentRequests")
+  receivedFriendRequests Friendship[]     @relation("ReceivedRequests")
+  leaderboardEntries   LeaderboardEntry[]
+}
+
+model Quiz {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  description  String?
+  category     String
+  difficulty   Difficulty @default(MIXED)
+  isPublic     Boolean    @default(true)
+  coverImage   String?
+  questions    Question[]
+  plays        Int        @default(0)
+  rating       Float      @default(0)
+  totalRatings Int        @default(0)
+  tags         String[]
+  creatorId    String     @db.ObjectId
+  creator      User       @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  games Game[]
+}
+
+model Game {
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
+  quizId          String     @db.ObjectId
+  quiz            Quiz       @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  hostId          String     @db.ObjectId
+  host            User       @relation(fields: [hostId], references: [id], onDelete: Cascade)
+  pin             String     @unique
+  mode            GameMode   @default(CLASSIC)
+  status          GameStatus @default(WAITING)
+  currentQuestion Int        @default(0)
+  players         GamePlayer[]
+  maxPlayers      Int        @default(50)
+  createdAt       DateTime   @default(now())
+  startedAt       DateTime?
+  endedAt         DateTime?
+}
+
+model Achievement {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   @unique
+  description String
+  icon        String
+  xpReward    Int      @default(0)
+  condition   String
+  category    String
+
+  userAchievements UserAchievement[]
+}
+
+model UserAchievement {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String      @db.ObjectId
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievementId String      @db.ObjectId
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  unlockedAt    DateTime    @default(now())
+
+  @@unique([userId, achievementId])
+}
+
+model Analytics {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String   @db.ObjectId
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quizId         String?
+  quizTitle      String
+  score          Int
+  totalQuestions Int
+  correctAnswers Int
+  accuracy       Float
+  timeTaken      Float
+  category       String
+  createdAt      DateTime @default(now())
+}
+
+model Friendship {
+  id          String           @id @default(auto()) @map("_id") @db.ObjectId
+  requesterId String           @db.ObjectId
+  requester   User             @relation("SentRequests", fields: [requesterId], references: [id], onDelete: Cascade)
+  receiverId  String           @db.ObjectId
+  receiver    User             @relation("ReceivedRequests", fields: [receiverId], references: [id], onDelete: Cascade)
+  status      FriendshipStatus @default(PENDING)
+  createdAt   DateTime         @default(now())
+
+  @@unique([requesterId, receiverId])
+}
+
+model LeaderboardEntry {
+  id         String            @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String            @db.ObjectId
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userName   String
+  userAvatar String
+  score      Int
+  period     LeaderboardPeriod
+  category   String            @default("general")
+  updatedAt  DateTime          @updatedAt
+
+  @@unique([userId, period, category])
+}
