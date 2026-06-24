@@ -62,7 +62,7 @@ export default function GameLobbyPage() {
     const socketUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
     const socketInstance = io(socketUrl, {
       transports: ['websocket'],
-      query: { token: localStorage.getItem('token') || '' }
+      query: { token: localStorage.getItem('quizverse_token') || '' }
     });
 
     setSocket(socketInstance);

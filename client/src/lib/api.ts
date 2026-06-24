@@ -28,8 +28,8 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && typeof window !== 'undefined') {
       localStorage.removeItem('quizverse_token');
       localStorage.removeItem('quizverse_user');
-      if (!window.location.pathname.includes('/login')) {
-        window.location.href = '/login';
+      if (window.location.pathname !== '/') {
+        window.location.href = '/';
       }
     }
     return Promise.reject(error);

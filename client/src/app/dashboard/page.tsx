@@ -25,17 +25,15 @@ export default function DashboardPage() {
   const [loadingQuizzes, setLoadingQuizzes] = useState(true);
 
   useEffect(() => {
-    // Check if token exists
-    const storedToken = localStorage.getItem('token');
-    if (!storedToken) {
-      router.push('/login');
+    if (!token) {
+      router.push('/');
       return;
     }
     
     if (!user) {
       checkAuth();
     }
-  }, [user, router, checkAuth]);
+  }, [user, token, router, checkAuth]);
 
   useEffect(() => {
     const fetchQuizzes = async () => {

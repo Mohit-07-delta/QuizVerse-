@@ -24,7 +24,7 @@ export default function SettingsPage() {
 
   useEffect(() => {
     if (!token) {
-      router.push('/login');
+      router.push('/');
       return;
     }
     if (user) {
