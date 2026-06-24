@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { FiCpu, FiPlay, FiSmile } from 'react-icons/fi';
@@ -13,7 +13,7 @@ import { useAuthStore } from '@/stores/authStore';
 
 const AVATARS = ['avatar1', 'avatar2', 'avatar3', 'avatar4', 'avatar5', 'avatar6'];
 
-export default function PlayJoinPage() {
+function PlayJoinForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -148,5 +148,13 @@ export default function PlayJoinPage() {
         </Card>
       </motion.div>
     </div>
+  );
+}
+
+export default function PlayJoinPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-dark-900 flex items-center justify-center"><FiCpu className="animate-spin text-cyan-400 text-3xl" /></div>}>
+      <PlayJoinForm />
+    </Suspense>
   );
 }

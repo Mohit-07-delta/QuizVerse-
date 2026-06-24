@@ -5,7 +5,7 @@ import { connectSocket, disconnectSocket, getSocket } from '@/lib/socket';
 import type { Socket } from 'socket.io-client';
 
 export function useSocket() {
-  const [isConnected, setIsConnected] = useState(false);
+  const [isConnected, setIsConnected] = useState(() => getSocket()?.connected || false);
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
@@ -22,10 +22,6 @@ export function useSocket() {
 
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
-
-    if (socket.connected) {
-      setIsConnected(true);
-    }
 
     return () => {
       socket.off('connect', onConnect);
@@ -51,7 +47,7 @@ export function useSocket() {
   }, []);
 
   return {
-    socket: socketRef.current,
+    socket: getSocket(),
     isConnected,
     emit,
     on,
