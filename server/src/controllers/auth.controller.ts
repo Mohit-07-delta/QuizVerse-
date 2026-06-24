@@ -54,6 +54,7 @@ function sanitizeUser(user: {
     level: user.level,
     streakDays: user.streakDays,
     createdAt: user.createdAt,
+    isGuest: user.email.endsWith('@quizverse.temp')
   };
 }
 
@@ -246,13 +247,14 @@ export async function googleLogin(
 // ─── Guest Login ──────────────────────────────────────────────────────────────
 
 export async function guestLogin(
-  _req: Request,
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
+    const { name } = req.body;
     const guestId = Math.random().toString(36).substring(2, 8).toUpperCase();
-    const guestName = `Guest_${guestId}`;
+    const guestName = name ? name.trim() : `Guest_${guestId}`;
     const guestEmail = `guest_${guestId}@quizverse.temp`;
     const randomAvatar = AVATAR_OPTIONS[Math.floor(Math.random() * AVATAR_OPTIONS.length)];
 

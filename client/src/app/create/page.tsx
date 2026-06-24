@@ -13,6 +13,7 @@ import { Sidebar } from '@/components/layout/Sidebar';
 import { QuestionEditor } from '@/components/quiz/QuestionEditor';
 import { AIGenerateModal } from '@/components/ai/AIGenerateModal';
 import { api } from '@/lib/api';
+import { useAuthStore } from '@/stores/authStore';
 import type { Question, QuizCategory, Difficulty } from '@/types';
 
 export default function CreateQuizPage() {
@@ -21,6 +22,14 @@ export default function CreateQuizPage() {
   // Step state
   const [step, setStep] = useState(1);
   const [aiModalOpen, setAiModalOpen] = useState(false);
+  const { user, isAuthenticated } = useAuthStore();
+
+  React.useEffect(() => {
+    if (isAuthenticated && user?.isGuest) {
+      toast.error('You need to create an account to make quizzes!');
+      router.push('/login');
+    }
+  }, [isAuthenticated, user, router]);
 
   // Check for generated quiz on mount
   React.useEffect(() => {

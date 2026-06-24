@@ -9,7 +9,33 @@ import { Card } from '@/components/ui/Card';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/stores/authStore';
+import toast from 'react-hot-toast';
+
 export default function LandingPage() {
+  const [nickname, setNickname] = useState('');
+  const [isJoining, setIsJoining] = useState(false);
+  const router = useRouter();
+  const { guestLogin } = useAuthStore();
+
+  const handlePlayAsGuest = async () => {
+    if (!nickname.trim()) {
+      toast.error('Please enter a nickname to play!');
+      return;
+    }
+    
+    setIsJoining(true);
+    try {
+      await guestLogin(nickname.trim());
+      router.push('/dashboard');
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to join. Try again.');
+    } finally {
+      setIsJoining(false);
+    }
+  };
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -68,16 +94,27 @@ export default function LandingPage() {
           </motion.p>
 
           {/* Actions */}
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16">
-            <Link href="/login" className="w-full sm:w-auto">
-              <Button className="w-full sm:w-auto px-8 py-4 text-base font-bold bg-gradient-to-r from-purple-600 via-purple-500 to-cyan-600 hover:from-purple-500 hover:to-cyan-500 text-white shadow-xl shadow-purple-500/25 flex items-center justify-center gap-2">
-                Get Started Free
+          <motion.div variants={itemVariants} className="flex flex-col items-center gap-4 mb-16">
+            <div className="flex flex-col sm:flex-row w-full max-w-md gap-3">
+              <input
+                type="text"
+                placeholder="Enter Nickname"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handlePlayAsGuest()}
+                className="flex-grow px-5 py-4 rounded-xl bg-dark-800/80 border border-purple-500/30 text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 text-lg text-center sm:text-left transition-all"
+                disabled={isJoining}
+              />
+              <Button 
+                onClick={handlePlayAsGuest}
+                disabled={isJoining}
+                className="px-8 py-4 text-base font-bold bg-gradient-to-r from-purple-600 via-purple-500 to-cyan-600 hover:from-purple-500 hover:to-cyan-500 text-white shadow-xl shadow-purple-500/25 flex items-center justify-center gap-2"
+              >
+                {isJoining ? 'Joining...' : <><FiPlay /> Play Now</>}
               </Button>
-            </Link>
-            <Link href="/play" className="w-full sm:w-auto">
-              <Button variant="secondary" className="w-full sm:w-auto px-8 py-4 text-base font-bold flex items-center justify-center gap-2">
-                <FiPlay /> Join Lobby
-              </Button>
+            </div>
+            <Link href="/login" className="text-gray-400 hover:text-purple-400 transition text-sm mt-2 underline-offset-4 hover:underline">
+              Want to create your own quizzes? Log in here.
             </Link>
           </motion.div>
 

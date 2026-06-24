@@ -132,7 +132,7 @@ export default function Navbar() {
                             <p className="text-xs text-dark-300">Level {user.level} • {user.xp} XP</p>
                           </div>
                           <Link
-                            href={`/profile/${user._id}`}
+                            href={`/profile/${user.id || user._id}`}
                             onClick={() => setDropdownOpen(false)}
                             className="flex items-center gap-3 px-3 py-2 text-sm text-dark-200 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
                           >
