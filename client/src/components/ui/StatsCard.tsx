@@ -23,11 +23,11 @@ export default function StatsCard({ icon, label, title, value, trend, className,
       transition={{ duration: 0.5, delay }}
       whileHover={{ y: -4 }}
       className={cn(
-        'glass-card p-5 rounded-2xl group cursor-default',
+        'glass-card p-6 rounded-2xl group cursor-default flex flex-col gap-y-3',
         className
       )}
     >
-      <div className="flex items-start justify-between mb-3">
+      <div className="flex items-start justify-between">
         <div className="p-2.5 rounded-xl bg-primary-500/10 text-primary-400 group-hover:bg-primary-500/20 transition-colors">
           {icon}
         </div>
@@ -45,8 +45,10 @@ export default function StatsCard({ icon, label, title, value, trend, className,
           </div>
         )}
       </div>
-      <p className="text-2xl font-bold font-heading">{value}</p>
-      <p className="text-sm text-dark-300 mt-1">{finalLabel}</p>
+      <div className="flex flex-col gap-y-1">
+        <p className="text-2xl font-bold font-heading">{value}</p>
+        <p className="text-sm text-dark-300">{finalLabel}</p>
+      </div>
     </motion.div>
   );
 }

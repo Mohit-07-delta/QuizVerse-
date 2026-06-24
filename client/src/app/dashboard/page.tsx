@@ -109,34 +109,42 @@ export default function DashboardPage() {
           {/* Quick Action Navigation Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <Link href="/create">
-              <Card className="p-5 bg-gradient-to-br from-purple-900/40 to-dark-800/40 border border-purple-500/15 backdrop-blur-md hover:border-purple-400/30 transition text-center group cursor-pointer h-full">
-                <FiPlusCircle className="text-3xl text-purple-400 mx-auto mb-3 group-hover:scale-110 transition" />
-                <h3 className="font-heading font-bold text-base text-white">Create Quiz</h3>
-                <p className="text-xs text-gray-400 mt-1 font-sans">Build manuals or use AI assistant</p>
+              <Card className="p-6 bg-gradient-to-br from-purple-900/40 to-dark-800/40 border border-purple-500/15 backdrop-blur-md hover:border-purple-400/30 transition text-center group cursor-pointer h-full flex flex-col items-center justify-center gap-y-3">
+                <FiPlusCircle className="text-3xl text-purple-400 group-hover:scale-110 transition" />
+                <div className="flex flex-col gap-y-1">
+                  <h3 className="font-heading font-bold text-base text-white">Create Quiz</h3>
+                  <p className="text-xs text-gray-400 font-sans">Build manuals or use AI assistant</p>
+                </div>
               </Card>
             </Link>
 
             <Link href="/browse">
-              <Card className="p-5 bg-gradient-to-br from-cyan-900/40 to-dark-800/40 border border-cyan-500/15 backdrop-blur-md hover:border-cyan-400/30 transition text-center group cursor-pointer h-full">
-                <FiCompass className="text-3xl text-cyan-400 mx-auto mb-3 group-hover:scale-110 transition" />
-                <h3 className="font-heading font-bold text-base text-white">Browse Quizzes</h3>
-                <p className="text-xs text-gray-400 mt-1 font-sans">Explore popular community rooms</p>
+              <Card className="p-6 bg-gradient-to-br from-cyan-900/40 to-dark-800/40 border border-cyan-500/15 backdrop-blur-md hover:border-cyan-400/30 transition text-center group cursor-pointer h-full flex flex-col items-center justify-center gap-y-3">
+                <FiCompass className="text-3xl text-cyan-400 group-hover:scale-110 transition" />
+                <div className="flex flex-col gap-y-1">
+                  <h3 className="font-heading font-bold text-base text-white">Browse Quizzes</h3>
+                  <p className="text-xs text-gray-400 font-sans">Explore popular community rooms</p>
+                </div>
               </Card>
             </Link>
 
             <Link href="/wikipedia">
-              <Card className="p-5 bg-gradient-to-br from-pink-900/40 to-dark-800/40 border border-pink-500/15 backdrop-blur-md hover:border-pink-400/30 transition text-center group cursor-pointer h-full">
-                <FiCpu className="text-3xl text-pink-400 mx-auto mb-3 group-hover:scale-110 transition animate-pulse" />
-                <h3 className="font-heading font-bold text-base text-white">Wikipedia Creator</h3>
-                <p className="text-xs text-gray-400 mt-1 font-sans">Generate questions from URLs</p>
+              <Card className="p-6 bg-gradient-to-br from-pink-900/40 to-dark-800/40 border border-pink-500/15 backdrop-blur-md hover:border-pink-400/30 transition text-center group cursor-pointer h-full flex flex-col items-center justify-center gap-y-3">
+                <FiCpu className="text-3xl text-pink-400 group-hover:scale-110 transition animate-pulse" />
+                <div className="flex flex-col gap-y-1">
+                  <h3 className="font-heading font-bold text-base text-white">Wikipedia Creator</h3>
+                  <p className="text-xs text-gray-400 font-sans">Generate questions from URLs</p>
+                </div>
               </Card>
             </Link>
 
             <Link href="/play">
-              <Card className="p-5 bg-gradient-to-br from-green-900/40 to-dark-800/40 border border-green-500/15 backdrop-blur-md hover:border-green-400/30 transition text-center group cursor-pointer h-full">
-                <FiBookOpen className="text-3xl text-green-400 mx-auto mb-3 group-hover:scale-110 transition" />
-                <h3 className="font-heading font-bold text-base text-white">Join Gameplay</h3>
-                <p className="text-xs text-gray-400 mt-1 font-sans">Enter game PIN to join lobby</p>
+              <Card className="p-6 bg-gradient-to-br from-green-900/40 to-dark-800/40 border border-green-500/15 backdrop-blur-md hover:border-green-400/30 transition text-center group cursor-pointer h-full flex flex-col items-center justify-center gap-y-3">
+                <FiBookOpen className="text-3xl text-green-400 group-hover:scale-110 transition" />
+                <div className="flex flex-col gap-y-1">
+                  <h3 className="font-heading font-bold text-base text-white">Join Gameplay</h3>
+                  <p className="text-xs text-gray-400 font-sans">Enter game PIN to join lobby</p>
+                </div>
               </Card>
             </Link>
           </div>
