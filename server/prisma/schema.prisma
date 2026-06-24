@@ -103,7 +103,7 @@ model User {
   email         String   @unique
   name          String
   passwordHash  String?
-  googleId      String?  @unique
+  googleId      String?
   avatar        String   @default("avatar1")
   role          Role     @default(USER)
   xp            Int      @default(0)

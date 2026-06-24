@@ -34,10 +34,11 @@ export const errorHandler = (
     const prismaError = err as Error & { code: string; meta?: Record<string, unknown> };
     switch (prismaError.code) {
       case "P2002": {
-        const target = prismaError.meta?.target as string[] | undefined;
+        const target = prismaError.meta?.target;
+        const targetStr = Array.isArray(target) ? target.join(", ") : target || "unique field";
         res.status(409).json({
           success: false,
-          message: `Duplicate value for: ${target?.join(", ") || "unique field"}.`,
+          message: `Duplicate value for: ${targetStr}.`,
         });
         return;
       }
