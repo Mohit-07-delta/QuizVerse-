@@ -36,7 +36,12 @@ export const useAuthStore = create<AuthStore>((set) => ({
       localStorage.setItem('quizverse_user', JSON.stringify(user));
       set({ user, token, isAuthenticated: true, isLoading: false });
     } catch (err: unknown) {
-      const message = (err as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Login failed';
+      let message = (err as any)?.response?.data?.message || 'Login failed';
+      const errors = (err as any)?.response?.data?.errors;
+      if (errors && Object.keys(errors).length > 0) {
+        const firstKey = Object.keys(errors)[0];
+        message = errors[firstKey][0];
+      }
       set({ error: message, isLoading: false });
       throw new Error(message);
     }
@@ -51,7 +56,12 @@ export const useAuthStore = create<AuthStore>((set) => ({
       localStorage.setItem('quizverse_user', JSON.stringify(user));
       set({ user, token, isAuthenticated: true, isLoading: false });
     } catch (err: unknown) {
-      const message = (err as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Registration failed';
+      let message = (err as any)?.response?.data?.message || 'Registration failed';
+      const errors = (err as any)?.response?.data?.errors;
+      if (errors && Object.keys(errors).length > 0) {
+        const firstKey = Object.keys(errors)[0];
+        message = errors[firstKey][0];
+      }
       set({ error: message, isLoading: false });
       throw new Error(message);
     }
