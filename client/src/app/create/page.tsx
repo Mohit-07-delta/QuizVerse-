@@ -22,14 +22,6 @@ export default function CreateQuizPage() {
   // Step state
   const [step, setStep] = useState(1);
   const [aiModalOpen, setAiModalOpen] = useState(false);
-  const { user, isAuthenticated } = useAuthStore();
-
-  React.useEffect(() => {
-    if (isAuthenticated && user?.isGuest) {
-      toast.error('You need to create an account to make quizzes!');
-      router.push('/login');
-    }
-  }, [isAuthenticated, user, router]);
 
   // Check for generated quiz on mount
   React.useEffect(() => {

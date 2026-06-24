@@ -113,9 +113,6 @@ export default function LandingPage() {
                 {isJoining ? 'Joining...' : <><FiPlay /> Play Now</>}
               </Button>
             </div>
-            <Link href="/login" className="text-gray-400 hover:text-purple-400 transition text-sm mt-2 underline-offset-4 hover:underline">
-              Want to create your own quizzes? Log in here.
-            </Link>
           </motion.div>
 
           {/* Floating mock-up grid */}

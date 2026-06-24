@@ -171,16 +171,10 @@ export default function Navbar() {
               ) : (
                 <div className="flex items-center gap-2">
                   <Link
-                    href="/login"
-                    className="px-4 py-2 text-sm font-medium text-dark-200 hover:text-white transition-colors"
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    href="/register"
+                    href="/"
                     className="px-4 py-2 text-sm font-semibold rounded-xl gradient-primary text-white hover:opacity-90 transition-opacity"
                   >
-                    Sign Up
+                    Play Now
                   </Link>
                 </div>
               )}
