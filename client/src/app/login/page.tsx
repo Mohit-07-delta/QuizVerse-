@@ -33,7 +33,7 @@ export default function LoginPage() {
       toast.success('Successfully logged in!');
       router.push('/dashboard');
     } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Invalid email or password.');
+      toast.error(err.message || 'Invalid email or password.');
     } finally {
       setLoading(false);
     }
@@ -47,7 +47,7 @@ export default function LoginPage() {
       toast.success('Joined as Guest!');
       router.push('/dashboard');
     } catch (err: any) {
-      toast.error('Failed to login as guest.');
+      toast.error(err.message || 'Failed to login as guest.');
     } finally {
       setGuestLoading(false);
     }

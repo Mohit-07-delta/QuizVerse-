@@ -43,7 +43,7 @@ export default function RegisterPage() {
       toast.success('Account created successfully!');
       router.push('/dashboard');
     } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Failed to register account.');
+      toast.error(err.message || 'Failed to register account.');
     } finally {
       setLoading(false);
     }
